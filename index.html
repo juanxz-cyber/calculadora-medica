@@ -3,57 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Calculadora Antropométrica Pro</title>
+  <title>Calculadora Antropométrica & Metabólica</title>
   
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="IMC Clínico">
+  <meta name="apple-mobile-web-app-title" content="MedCalc">
   <meta name="theme-color" content="#0b0f19">
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #0b0f19; color: #f1f5f9; min-height: 100vh; display: flex; justify-content: center; padding: env(safe-area-inset-top, 20px) 16px env(safe-area-inset-bottom, 20px) 16px; }
+    body { background-color: #0b0f19; color: #f1f5f9; min-height: 100vh; display: flex; justify-content: center; padding: env(safe-area-inset-top, 20px) 14px env(safe-area-inset-bottom, 24px) 14px; }
     .container { width: 100%; max-width: 540px; margin: auto; }
-    .card { background: #111827; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; padding: 22px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); }
+    .card { background: #111827; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; padding: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); }
     
-    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .header h1 { font-size: 19px; font-weight: 700; color: #f8fafc; display: flex; align-items: center; gap: 8px; }
-    .tag { font-size: 10px; padding: 3px 7px; border-radius: 6px; background: rgba(34, 197, 94, 0.15); color: #4ade80; font-weight: 700; text-transform: uppercase; border: 1px solid rgba(34, 197, 94, 0.3); }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .header h1 { font-size: 18px; font-weight: 700; color: #f8fafc; display: flex; align-items: center; gap: 8px; }
+    .tag { font-size: 10px; padding: 3px 7px; border-radius: 6px; background: rgba(56, 189, 248, 0.15); color: #38bdf8; font-weight: 700; text-transform: uppercase; border: 1px solid rgba(56, 189, 248, 0.3); }
 
     .toggle-group { display: flex; background: #1e293b; padding: 3px; border-radius: 12px; }
     .toggle-btn { padding: 6px 12px; border: none; background: transparent; color: #94a3b8; font-size: 12px; font-weight: 600; border-radius: 9px; cursor: pointer; transition: 0.2s; }
     .toggle-btn.active { background: #0284c7; color: #ffffff; }
 
-    .sex-selector { display: flex; gap: 8px; margin-bottom: 16px; }
-    .sex-btn { flex: 1; padding: 12px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); background: #1e293b; color: #cbd5e1; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; }
+    .sex-selector { display: flex; gap: 8px; margin-bottom: 14px; }
+    .sex-btn { flex: 1; padding: 11px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); background: #1e293b; color: #cbd5e1; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; }
     .sex-btn.active { border-color: #38bdf8; background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
 
-    .input-box { background: #1a2234; border: 1px solid rgba(255,255,255,0.06); border-radius: 18px; padding: 15px; margin-bottom: 12px; }
-    .input-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .input-title { font-size: 14px; font-weight: 600; color: #e2e8f0; }
-    .input-badge { display: flex; align-items: center; background: #0b0f19; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 4px 10px; font-weight: 700; color: #38bdf8; font-size: 15px; }
-    .num-input { width: 55px; background: transparent; border: none; color: #38bdf8; font-weight: 700; font-size: 15px; text-align: right; outline: none; }
+    .input-box { background: #1a2234; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 14px; margin-bottom: 10px; }
+    .input-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .input-title { font-size: 13px; font-weight: 600; color: #e2e8f0; }
+    .input-badge { display: flex; align-items: center; background: #0b0f19; border: 1px solid rgba(255,255,255,0.1); border-radius: 9px; padding: 3px 9px; font-weight: 700; color: #38bdf8; font-size: 15px; }
+    .num-input { width: 52px; background: transparent; border: none; color: #38bdf8; font-weight: 700; font-size: 15px; text-align: right; outline: none; }
 
-    input[type=range] { width: 100%; height: 8px; border-radius: 6px; background: #334155; outline: none; -webkit-appearance: none; }
-    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #38bdf8; border: 3px solid #0b0f19; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+    input[type=range] { width: 100%; height: 7px; border-radius: 6px; background: #334155; outline: none; -webkit-appearance: none; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #38bdf8; border: 3px solid #0b0f19; box-shadow: 0 2px 6px rgba(0,0,0,0.5); }
 
-    .results-card { background: #172033; border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 18px; text-align: center; margin-top: 10px; }
+    /* Selector de Actividad Física */
+    .activity-label { font-size: 12px; color: #94a3b8; font-weight: 600; margin: 12px 0 6px 2px; display: block; }
+    .activity-select { width: 100%; padding: 12px; border-radius: 14px; background: #1a2234; border: 1px solid rgba(255,255,255,0.1); color: #f8fafc; font-size: 13px; font-weight: 600; outline: none; margin-bottom: 14px; }
+
+    /* Resultados Principales */
+    .results-card { background: #172033; border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 18px; text-align: center; }
     .imc-title { font-size: 11px; font-weight: 700; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase; }
-    .imc-val { font-size: 48px; font-weight: 800; color: #f8fafc; line-height: 1.1; margin-top: 4px; }
-    .imc-class { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+    .imc-val { font-size: 46px; font-weight: 800; color: #f8fafc; line-height: 1.1; margin-top: 2px; }
+    .imc-class { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
 
-    .meter-container { width: 100%; margin: 10px 0 14px 0; position: relative; }
-    .meter-bar { height: 10px; border-radius: 6px; width: 100%; background: linear-gradient(to right, #38bdf8 0%, #22c55e 25%, #eab308 55%, #f97316 75%, #ef4444 100%); }
-    .meter-indicator { width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 9px solid #ffffff; position: absolute; top: -11px; left: 50%; transform: translateX(-50%); transition: left 0.2s ease-out; }
+    .meter-container { width: 100%; margin: 8px 0 14px 0; position: relative; }
+    .meter-bar { height: 9px; border-radius: 6px; width: 100%; background: linear-gradient(to right, #38bdf8 0%, #22c55e 25%, #eab308 55%, #f97316 75%, #ef4444 100%); }
+    .meter-indicator { width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid #ffffff; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); transition: left 0.2s ease-out; }
 
-    .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-    .metric-cell { background: #111827; border: 1px solid rgba(255,255,255,0.05); padding: 12px; border-radius: 12px; text-align: left; }
-    .metric-cell.highlight { border-color: rgba(56, 189, 248, 0.3); background: rgba(56, 189, 248, 0.05); }
-    .metric-cell-title { font-size: 11px; color: #94a3b8; margin-bottom: 4px; }
+    .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+    .metric-cell { background: #111827; border: 1px solid rgba(255,255,255,0.05); padding: 10px 12px; border-radius: 12px; text-align: left; }
+    .metric-cell-title { font-size: 11px; color: #94a3b8; margin-bottom: 3px; }
     .metric-cell-val { font-size: 14px; font-weight: 700; color: #e2e8f0; }
 
-    .btn-copy { width: 100%; margin-top: 14px; padding: 14px; border-radius: 14px; border: none; background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3); transition: 0.2s; }
-    .btn-copy:active { transform: scale(0.98); }
+    /* Panel de Objetivos Calóricos (NUEVO) */
+    .section-divider { font-size: 12px; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.8px; margin: 18px 0 10px 0; text-align: left; display: flex; align-items: center; justify-content: space-between; }
+    .goals-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .goal-box { background: #111827; border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 12px 8px; text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
+    .goal-box.cut { border-bottom: 3px solid #f97316; }
+    .goal-box.maint { border-bottom: 3px solid #22c55e; background: rgba(34, 197, 94, 0.04); }
+    .goal-box.bulk { border-bottom: 3px solid #38bdf8; }
+    
+    .goal-name { font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px; }
+    .goal-kcal { font-size: 17px; font-weight: 800; color: #ffffff; }
+    .goal-sub { font-size: 10px; font-weight: 600; margin-top: 4px; padding: 2px 6px; border-radius: 6px; display: inline-block; }
+
+    /* Macros & Agua */
+    .macros-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+    .macro-item { background: rgba(56, 189, 248, 0.07); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 12px; padding: 10px 12px; text-align: left; }
+    .macro-title { font-size: 11px; color: #94a3b8; }
+    .macro-val { font-size: 14px; font-weight: 700; color: #38bdf8; margin-top: 2px; }
   </style>
 </head>
 <body>
@@ -61,7 +80,7 @@
   <div class="container">
     <div class="card">
       <div class="header">
-        <h1>IMC + Metabolismo <span class="tag">LIVE v2.0</span></h1>
+        <h1>Antropometría & Nutrición <span class="tag">PRO</span></h1>
         <div class="toggle-group">
           <button id="btnSI" class="toggle-btn active" onclick="setSystem('si')">Métrico</button>
           <button id="btnImp" class="toggle-btn" onclick="setSystem('imp')">Imperial</button>
@@ -73,10 +92,10 @@
         <button id="btnF" class="sex-btn" onclick="setSex('f')">♀ Femenino</button>
       </div>
 
-      <!-- Edad (NUEVO) -->
+      <!-- Edad -->
       <div class="input-box">
         <div class="input-header">
-          <span class="input-title">Edad del Paciente</span>
+          <span class="input-title">Edad</span>
           <div class="input-badge">
             <input type="number" id="edadInput" class="num-input" value="20">
             <span style="font-size: 12px; color: #94a3b8; margin-left: 4px;">años</span>
@@ -127,6 +146,16 @@
         </div>
       </div>
 
+      <!-- Nivel de Actividad Física -->
+      <label class="activity-label">Nivel de Actividad Física (Para Gasto Diario Total)</label>
+      <select id="activitySelect" class="activity-select" onchange="calculate()">
+        <option value="1.2">Sedentario (Sin ejercicio / Oficina)</option>
+        <option value="1.375">Ligero (Ejercicio 1 a 3 días/semana)</option>
+        <option value="1.55" selected>Moderado - Activo (Gimnasio 4 a 5 días/semana)</option>
+        <option value="1.725">Intenso (Entrenamiento pesado 6 a 7 días)</option>
+        <option value="1.9">Atleta de Alto Rendimiento (Doble sesión)</option>
+      </select>
+
       <!-- Resultados -->
       <div class="results-card">
         <div class="imc-title">Índice de Masa Corporal</div>
@@ -139,9 +168,9 @@
         </div>
 
         <div class="metrics-grid">
-          <div class="metric-cell highlight">
-            <div class="metric-cell-title">Gasto Basal (Mifflin)</div>
-            <div class="metric-cell-val" id="tmbDisplay" style="color:#38bdf8;">1749 kcal/día</div>
+          <div class="metric-cell">
+            <div class="metric-cell-title">Metabolismo Basal (Reposo)</div>
+            <div class="metric-cell-val" id="tmbDisplay">1749 kcal</div>
           </div>
           <div class="metric-cell">
             <div class="metric-cell-title">Sup. Corporal (Mosteller)</div>
@@ -152,12 +181,47 @@
             <div class="metric-cell-val" id="devineDisplay">70.5 kg</div>
           </div>
           <div class="metric-cell">
-            <div class="metric-cell-title">Estado de Peso</div>
+            <div class="metric-cell-title">Diferencia vs. Rango</div>
             <div class="metric-cell-val" id="deltaDisplay" style="color: #4ade80;">Óptimo</div>
           </div>
         </div>
 
-        <button class="btn-copy" id="copyBtn" onclick="copyReport()">📋 Copiar Reporte Clínico</button>
+        <!-- Apartado de Calorías según Objetivo -->
+        <div class="section-divider">
+          <span>Objetivos Calóricos Diarios</span>
+          <span style="font-size:10px; color:#94a3b8; font-weight:500;">kcal / día</span>
+        </div>
+
+        <div class="goals-grid">
+          <div class="goal-box cut">
+            <div class="goal-name">Bajar Grasa</div>
+            <div class="goal-kcal" id="cutKcal">2260</div>
+            <div><span class="goal-sub" style="background:rgba(249,115,22,0.15); color:#fb923c;">-450 kcal</span></div>
+          </div>
+          <div class="goal-box maint">
+            <div class="goal-name">Mantener</div>
+            <div class="goal-kcal" id="maintKcal">2710</div>
+            <div><span class="goal-sub" style="background:rgba(34,197,94,0.15); color:#4ade80;">Equilibrio</span></div>
+          </div>
+          <div class="goal-box bulk">
+            <div class="goal-name">Masa Muscular</div>
+            <div class="goal-kcal" id="bulkKcal">3060</div>
+            <div><span class="goal-sub" style="background:rgba(56,189,248,0.15); color:#38bdf8;">+350 kcal</span></div>
+          </div>
+        </div>
+
+        <!-- Proteína y Agua -->
+        <div class="macros-bar">
+          <div class="macro-item">
+            <div class="macro-title">Proteína (Hipertrofia)</div>
+            <div class="macro-val" id="protDisplay">135 – 165 g/día</div>
+          </div>
+          <div class="macro-item">
+            <div class="macro-title">Hidratación Base</div>
+            <div class="macro-val" id="waterDisplay">2.6 Litros/día</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -174,6 +238,7 @@
     const tallaSlider = document.getElementById('tallaSlider');
     const ftSlider = document.getElementById('ftSlider');
     const inSlider = document.getElementById('inSlider');
+    const activitySelect = document.getElementById('activitySelect');
 
     function setSystem(sys) {
       if (currentSystem === sys) return;
@@ -218,6 +283,7 @@
     function calculate() {
       let weightKg, heightCm;
       let age = parseInt(edadInput.value) || 20;
+      let activityFactor = parseFloat(activitySelect.value) || 1.55;
 
       if (currentSystem === 'si') {
         weightKg = parseFloat(pesoInput.value) || 0;
@@ -243,10 +309,28 @@
       const bsa = Math.sqrt((heightCm * weightKg) / 3600);
       document.getElementById('bsaDisplay').innerText = bsa.toFixed(2) + " m²";
 
-      // Fórmula Mifflin-St Jeor (TMB)
+      // Fórmula Mifflin-St Jeor (TMB en reposo)
       let tmb = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + (currentSex === 'm' ? 5 : -161);
-      document.getElementById('tmbDisplay').innerText = Math.round(tmb) + " kcal/día";
+      document.getElementById('tmbDisplay').innerText = Math.round(tmb) + " kcal";
 
+      // Gasto Energético Total Diario (TDEE) y Objetivos
+      let maintKcal = Math.round(tmb * activityFactor);
+      let cutKcal = Math.max(1200, maintKcal - 450); // Déficit seguro de 450 kcal
+      let bulkKcal = maintKcal + 350; // Superávit limpio de 350 kcal
+
+      document.getElementById('maintKcal').innerText = maintKcal;
+      document.getElementById('cutKcal').innerText = cutKcal;
+      document.getElementById('bulkKcal').innerText = bulkKcal;
+
+      // Proteína recomendada (1.8 a 2.2 g por kg de peso) y Agua (35 ml por kg)
+      let protMin = Math.round(weightKg * 1.8);
+      let protMax = Math.round(weightKg * 2.2);
+      document.getElementById('protDisplay').innerText = `${protMin} – ${protMax} g/día`;
+
+      let waterLiters = ((weightKg * 35) / 1000).toFixed(1);
+      document.getElementById('waterDisplay').innerText = `${waterLiters} Litros/día`;
+
+      // Peso Ideal Devine
       const heightInches = heightCm / 2.54;
       const inchesOver60 = Math.max(0, heightInches - 60);
       let devineKg = (currentSex === 'm') ? 50 + (2.3 * inchesOver60) : 45.5 + (2.3 * inchesOver60);
@@ -290,18 +374,6 @@
       else if (imc < 35) { classEl.innerText = "Obesidad Grado I"; classEl.style.color = "#f97316"; }
       else if (imc < 40) { classEl.innerText = "Obesidad Grado II"; classEl.style.color = "#ef4444"; }
       else { classEl.innerText = "Obesidad Grado III"; classEl.style.color = "#991b1b"; }
-    }
-
-    function copyReport() {
-      const imc = document.getElementById('imcDisplay').innerText;
-      const clas = document.getElementById('classDisplay').innerText;
-      const tmb = document.getElementById('tmbDisplay').innerText;
-      const bsa = document.getElementById('bsaDisplay').innerText;
-      const text = `📊 Reporte Antropométrico:\n• IMC: ${imc} kg/m² (${clas})\n• Gasto Basal: ${tmb}\n• Sup. Corporal: ${bsa}`;
-      navigator.clipboard.writeText(text);
-      const btn = document.getElementById('copyBtn');
-      btn.innerText = "✅ ¡Reporte Copiado!";
-      setTimeout(() => { btn.innerText = "📋 Copiar Reporte Clínico"; }, 2000);
     }
 
     edadSlider.addEventListener('input', (e) => { edadInput.value = e.target.value; calculate(); });
